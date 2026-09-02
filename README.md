@@ -5,6 +5,8 @@
 ![no dependencies](https://img.shields.io/badge/dependencies-none-2F6F5E)
 ![duration](https://img.shields.io/badge/duration-29%20days-A14B41)
 
+**🔗 Live: [placementsprinttracker.netlify.app](https://placementsprinttracker.netlify.app/)**
+
 A small tool I built for myself, not a project I'm trying to showcase.
 
 I had 29 days to cover DSA, core CS subjects, resume prep, and off-campus applications before my OAs, and I knew I'd lose track of what I actually did each day if I didn't write it down somewhere. So I made this — a simple day-by-day tracker that follows my exact daily schedule, with checkboxes for each time block and a spot for notes.
@@ -58,13 +60,15 @@ I didn't want a generic to-do app. I wanted something that mirrored my actual da
 
 ## 🚀 How to use it
 
-Just open `29-day-hourly-tracker.html` in a browser. There's nothing to install and no setup — it runs entirely on its own.
+Just open `29-day-hourly-tracker.html` in any browser — no installs, no accounts, no build step.
 
 ```
 git clone <this-repo>
 cd <this-repo>
 open 29-day-hourly-tracker.html   # or just double-click it
 ```
+
+**If you're opening this from GitHub (not me):** it'll work perfectly fine as your own personal copy. Your checkboxes and notes save right in your own browser (via `localStorage`), private to your device — nothing gets sent anywhere or shared with anyone, including me. If you switch browsers or clear site data, you'll start fresh, so it's meant to be used as a local day-to-day tool rather than something you check from multiple devices.
 
 ## 💭 A note on why this exists
 

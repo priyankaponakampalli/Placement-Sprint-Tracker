@@ -1,4 +1,9 @@
-# 29-Day Placement Sprint Tracker
+# 📅 29-Day Placement Sprint Tracker
+
+![status](https://img.shields.io/badge/status-personal%20use-8A9A5B)
+![made with](https://img.shields.io/badge/made%20with-HTML%20%2B%20CSS%20%2B%20JS-D4A017)
+![no dependencies](https://img.shields.io/badge/dependencies-none-2F6F5E)
+![duration](https://img.shields.io/badge/duration-29%20days-A14B41)
 
 A small tool I built for myself, not a project I'm trying to showcase.
 
@@ -6,23 +11,62 @@ I had 29 days to cover DSA, core CS subjects, resume prep, and off-campus applic
 
 That's it. No grand plans, no roadmap, no intention of turning this into something bigger. Just something to keep me honest with myself for a month.
 
-## What it does
+---
 
-- Lays out my fixed daily schedule, hour by hour, for all 29 days
-- Each day has checkboxes for every block (DSA sessions, core subjects, resume work, revision)
-- A remarks box under each day, for things like "struggled with recursion, revisit tomorrow" or "skipped applications, catch up this weekend"
-- A small progress summary at the top so I can see at a glance how many blocks I've actually completed out of the total
-- Everything saves automatically as I go — I just open the file and check things off
+## ✅ What it does
 
-## Why it looks the way it does
+| Feature | What it means for me |
+|---|---|
+| Fixed hourly schedule | Every day shows the same time blocks I actually follow — no re-deciding each morning |
+| Per-block checkboxes | Tick off DSA, core subjects, resume work, and revision as I finish each one |
+| Daily remarks box | A place to jot "struggled with recursion" or "skipped applications, catch up Sunday" |
+| Live progress summary | See total blocks completed and full days finished, at a glance |
+| Auto-save | Nothing to submit or export — it just remembers where I left off |
+| Zero setup | One HTML file, no installs, no accounts, no dependencies |
+
+---
+
+## 🕘 My daily schedule (baked into every day)
+
+| Time | Block |
+|---|---|
+| 9:00 – 1:00 | DSA — block 1 |
+| 1:00 – 2:00 | Lunch |
+| 2:00 – 4:45 | DSA — block 2 |
+| 4:45 – 5:30 | Break |
+| 5:30 – 6:40 | Core subject (part 1) |
+| 6:40 – 9:00 | Personal commitment |
+| 9:00 – 10:00 | Core subject (part 2) |
+| 10:00 – 11:00 | Resume project deep-dive |
+| 11:00 – 12:00 | DSA revision |
+
+Off-campus applications get a flexible 2-hour slot fit in wherever the day allows.
+
+## 📚 What's being covered
+
+| Area | Details |
+|---|---|
+| DSA | NeetCode 150, pattern by pattern — Linked List → Stacks/Queues → Binary Search → Trees → Tries → Heaps → Backtracking → Graphs → DP → Greedy → Intervals |
+| Core CS | OOPs, DBMS, OS, CN — rotated daily in short focused sessions |
+| Resume | Deep-diving my own projects so I can explain every decision, not just what I built |
+| Applications | Daily off-campus applications, never skipped even during mock-test weeks |
+| Mock OAs | Timed, full-length mock tests built into the final week |
+
+## 🎨 Why it looks the way it does
 
 I didn't want a generic to-do app. I wanted something that mirrored my actual day — same time blocks, same order, every single day — so there'd be zero friction between "what I'm supposed to do right now" and "what this screen shows me." No logins, no clutter, nothing to configure. Open it, check boxes, close it.
 
-## How to use it
+## 🚀 How to use it
 
 Just open `29-day-hourly-tracker.html` in a browser. There's nothing to install and no setup — it runs entirely on its own.
 
-## A note on why this exists
+```
+git clone <this-repo>
+cd <this-repo>
+open 29-day-hourly-tracker.html   # or just double-click it
+```
+
+## 💭 A note on why this exists
 
 I'm not sharing this because I think it's impressive engineering — it's a single HTML file I put together in an afternoon. I'm putting it here mostly so future-me (or anyone else prepping for the same grind) has a record of it. If it helps even one other person stop losing track of their own progress during a crunch month, that's more than enough reason for it to exist.
 

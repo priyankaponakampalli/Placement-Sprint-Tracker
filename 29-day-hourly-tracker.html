@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>29-Day Placement Sprint Tracker</title>
+<style>
+  :root{
+    --bg: #F1EEE5;
+    --card: #FBFAF6;
+    --ink: #2B2A25;
+    --ink-soft: #6B6A5F;
+    --line: #DEDACB;
+    --done: #2F6F5E;
+    --done-bg: #E1EEE8;
+    --none-bg: #EDEAE0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 28px 16px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  h1{
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 25px;
+    font-weight: 400;
+    margin: 0 0 4px;
+  }
+  .sub{color:var(--ink-soft); font-size:14px; margin-bottom:20px;}
+
+  .stats{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;}
+  .stat{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 16px; min-width:74px;}
+  .stat .n{font-size:20px; font-weight:600;}
+  .stat .l{font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.03em;}
+
+  .progress-track{height:8px; background:var(--none-bg); border-radius:6px; overflow:hidden; margin-bottom:24px;}
+  .progress-fill{height:100%; background:var(--done); width:0%; transition:width .3s;}
+
+  .week-label{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+    color:var(--ink-soft); margin: 24px 0 10px; font-weight:600;
+  }
+
+  .day{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px 16px;
+    margin-bottom:10px;
+  }
+  .day-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:2px;}
+  .day-title{font-weight:600; font-size:14.5px;}
+  .day-date{color:var(--ink-soft); font-size:12px; white-space:nowrap;}
+  .day-progress{color:var(--ink-soft); font-size:11.5px; margin-bottom:10px;}
+
+  .block{
+    display:flex; align-items:flex-start; gap:10px;
+    padding:8px 0;
+    border-top:1px solid var(--line);
+  }
+  .block:first-of-type{border-top:1px solid var(--line);}
+  .block input[type=checkbox]{
+    margin-top:3px; width:16px; height:16px; accent-color:var(--done); cursor:pointer; flex-shrink:0;
+  }
+  .block-text{flex:1;}
+  .block-time{font-size:11.5px; color:var(--ink-soft); font-weight:600;}
+  .block-desc{font-size:13px; margin-top:1px;}
+  .block.checked .block-desc{color:var(--ink-soft); text-decoration:line-through;}
+
+  .remarks{
+    width:100%;
+    margin-top:10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#FEFDFB;
+    padding:8px 10px;
+    font-size:13px;
+    font-family:inherit;
+    color:var(--ink);
+    resize:vertical;
+    min-height:32px;
+  }
+  .remarks::placeholder{color:#B5B2A5;}
+
+  .footer-note{text-align:center; color:var(--ink-soft); font-size:12px; margin-top:28px;}
+  .save-indicator{font-size:11px; color:var(--ink-soft); text-align:right; margin-top:22px; min-height:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>29-day placement sprint tracker</h1>
+  <div class="sub">Sep 2 &ndash; Sep 30 &middot; fixed daily schedule, 9:00 AM &ndash; 12:00 AM</div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-blocks-done">0</div><div class="l">Blocks done</div></div>
+    <div class="stat"><div class="n" id="stat-days-full">0</div><div class="l">Full days</div></div>
+    <div class="stat"><div class="n" id="stat-total">203</div><div class="l">Total blocks</div></div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <div id="day-list"></div>
+  <div class="save-indicator" id="save-indicator"></div>
+  <div class="footer-note">Progress saves automatically on this device.</div>
+</div>
+
+<script>
+const dsaTopics = [
+"Linked List — reversal, fast-slow, merge, cycle detection",
+"Linked List — intersection, palindrome, clone w/ random ptr, doubly/circular",
+"Stack & Queues — monotonic stack, valid parens, min stack, queue via stack",
+"Binary Search — classic, rotated array, intro to binary search on answer",
+"Sliding Window & Two Pointers",
+"Trees Pt.1 — traversals (inorder/preorder/postorder/BFS), BST insert/search/delete",
+"Trees Pt.2 — LCA, diameter, balanced check, serialize/deserialize + SUNDAY MOCK: Linked List+Stack+Binary Search, 90 min",
+"Tries — implement trie, word search II, prefix problems",
+"Heap / Priority Queue — kth largest, merge k lists, top-k frequent",
+"Backtracking Pt.1 — subsets, permutations, combinations",
+"Backtracking Pt.2 — N-Queens, word search, palindrome partitioning",
+"Graphs Pt.1 — BFS/DFS, number of islands, clone graph",
+"Graphs Pt.2 — Union-Find, topological sort, course schedule",
+"Advanced Graphs — Dijkstra, MST basics + SUNDAY MOCK: Trees+Graphs+Backtracking, 90 min",
+"1-D DP Pt.1 — climbing stairs, house robber, coin change",
+"1-D DP Pt.2 — LIS, decode ways, word break",
+"2-D DP Pt.1 — unique paths, LCS, edit distance",
+"2-D DP Pt.2 — knapsack-style, matrix DP",
+"Greedy — jump game, gas station, task scheduler",
+"Intervals — merge intervals, insert interval, meeting rooms",
+"Math & Geometry + Bit Manipulation + SUNDAY MOCK: DP+Greedy+Intervals, 90 min",
+"Gap-filling: redo weakest 2 topics from weeks 1-3",
+"Gap-filling continued — target remaining weak spots",
+"Full NeetCode 150 checklist review — patch any topic under 70% comfort",
+"Core subjects rapid-fire revision (see evening slot)",
+"TIMED MOCK OA #1 — full length, mixed topics, strict timer, no notes",
+"Review Mock OA #1 mistakes deeply, patch weak spots",
+"TIMED MOCK OA #2 + basic HR/behavioral prep",
+"Final light revision only — flip through your cheat sheet. No new problems."
+];
+
+const coreTopics = [
+"OOPs: 4 pillars, access modifiers",
+"OOPs: constructors, static vs instance, overloading vs overriding",
+"OOPs: abstract class vs interface",
+"OOPs: SOLID principles (names + 1-liner each)",
+"OOPs: diamond problem, virtual functions (MCQ practice)",
+"DBMS: ER model, normalization 1NF-3NF",
+"DBMS: keys — primary/foreign/candidate/composite",
+"DBMS: SQL joins, group by, subqueries (write queries by hand)",
+"DBMS: ACID properties, isolation levels",
+"DBMS: indexing basics",
+"OS: process vs thread, process states",
+"OS: CPU scheduling — FCFS, SJF, Round Robin, Priority",
+"OS: deadlock — conditions, prevention, Banker's algorithm concept",
+"OS: memory management — paging, segmentation",
+"OS: synchronization — semaphores, mutex, producer-consumer",
+"CN: OSI vs TCP/IP model layers",
+"CN: TCP vs UDP",
+"CN: HTTP/HTTPS basics, DNS working",
+"CN: IP addressing basics, ARP/DHCP (recognition level)",
+"CN: light revision — whatever's shakiest",
+"Free — catch-up buffer, revisit anything unclear",
+"Resume: write 2-min walkthrough script for each project",
+"Resume: mock-interview yourself — why this tech/model, limitations, scaling",
+"—",
+"Core rapid-fire: OOPs + DBMS + OS + CN, 30 min each",
+"—",
+"Light revision only — no new material",
+"—",
+"Rest early. Confidence day. No cramming."
+];
+
+const eveningOverride = {
+  19: "Resume Project Deep-Dive Session 1 (instead of revision slot)",
+  20: "Resume Project Deep-Dive Session 2 (instead of revision slot)"
+};
+
+const dates = ["Sep 2","Sep 3","Sep 4","Sep 5","Sep 6","Sep 7","Sep 8","Sep 9","Sep 10","Sep 11","Sep 12","Sep 13","Sep 14","Sep 15","Sep 16","Sep 17","Sep 18","Sep 19","Sep 20","Sep 21","Sep 22","Sep 23","Sep 24","Sep 25","Sep 26","Sep 27","Sep 28","Sep 29","Sep 30"];
+
+function buildDay(n){
+  const idx = n-1;
+  const evening = eveningOverride[n] || ("Revision — redo yesterday's / weak problems (spaced repetition): " + coreTopics[idx]);
+  return {
+    n, date: dates[idx],
+    blocks: [
+      {time:"9:00 – 1:00", label:"DSA block 1", desc: dsaTopics[idx] + " — concept + easy/medium problems"},
+      {time:"2:00 – 4:45", label:"DSA block 2", desc: dsaTopics[idx] + " — medium/hard problems"},
+      {time:"5:30 – 6:40", label:"Core subject (part 1)", desc: coreTopics[idx]},
+      {time:"5:00 – 7:00", label:"Off-campus applications", desc:"Apply, tailor resume/cover letters, LinkedIn outreach, referrals — fit in whenever you have a gap today"},
+      {time:"9:00 – 10:00", label:"Core subject (part 2)", desc: coreTopics[idx]},
+      {time:"10:00 – 11:00", label:"Resume projects", desc: eveningOverride[n] || "Deep-dive: trace your code flow, write 'why' for each decision, prep 2-min walkthrough, list limitations"},
+      {time:"11:00 – 12:00", label:"DSA revision", desc: "Redo yesterday's / previous weak problems (spaced repetition) on: " + dsaTopics[idx]}
+    ]
+  };
+}
+
+const days = [];
+for(let i=1;i<=29;i++) days.push(buildDay(i));
+
+function weekLabelFor(n){
+  if(n===1) return "Week 1 — Linked List, Stacks/Queues, Binary Search, Trees";
+  if(n===8) return "Week 2 — Tries, Heaps, Backtracking, Graphs";
+  if(n===15) return "Week 3 — Dynamic Programming, Greedy, Intervals";
+  if(n===22) return "Week 4 — Consolidation, Mocks, Resume Mastery";
+  return null;
+}
+
+const STORAGE_KEY = "schedule-progress";
+let state = {};
+
+function render(){
+  const list = document.getElementById("day-list");
+  list.innerHTML = "";
+  days.forEach(d => {
+    const wl = weekLabelFor(d.n);
+    if(wl){
+      const lab = document.createElement("div");
+      lab.className = "week-label";
+      lab.textContent = wl;
+      list.appendChild(lab);
+    }
+    const rec = state[d.n] || {checks:[false,false,false,false,false,false,false], remarks:""};
+    const doneCount = rec.checks.filter(Boolean).length;
+
+    const card = document.createElement("div");
+    card.className = "day";
+    let blocksHtml = "";
+    d.blocks.forEach((b, i)=>{
+      const checked = rec.checks[i] ? "checked" : "";
+      const cls = rec.checks[i] ? "block checked" : "block";
+      blocksHtml += `
+        <div class="${cls}">
+          <input type="checkbox" data-day="${d.n}" data-idx="${i}" ${checked}>
+          <div class="block-text">
+            <div class="block-time">${b.time} — ${b.label}</div>
+            <div class="block-desc">${b.desc}</div>
+          </div>
+        </div>`;
+    });
+
+    card.innerHTML = `
+      <div class="day-top">
+        <div class="day-title">Day ${d.n}</div>
+        <div class="day-date">${d.date}</div>
+      </div>
+      <div class="day-progress">${doneCount} / 7 blocks done</div>
+      ${blocksHtml}
+      <textarea class="remarks" data-day="${d.n}" placeholder="Remarks — e.g. skipped applications block, catch up tomorrow">${rec.remarks || ""}</textarea>
+    `;
+    list.appendChild(card);
+
+    card.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+      cb.addEventListener("change", ()=>{
+        const day = parseInt(cb.dataset.day);
+        const idx = parseInt(cb.dataset.idx);
+        const current = state[day] || {checks:[false,false,false,false,false,false,false], remarks:""};
+        current.checks[idx] = cb.checked;
+        state[day] = current;
+        save();
+        render();
+      });
+    });
+
+    const ta = card.querySelector(".remarks");
+    let debounce;
+    ta.addEventListener("input", ()=>{
+      clearTimeout(debounce);
+      debounce = setTimeout(()=>{
+        const day = d.n;
+        const current = state[day] || {checks:[false,false,false,false,false,false,false], remarks:""};
+        current.remarks = ta.value;
+        state[day] = current;
+        save();
+      }, 500);
+    });
+  });
+  updateStats();
+}
+
+function updateStats(){
+  let blocksDone = 0, fullDays = 0;
+  days.forEach(d=>{
+    const rec = state[d.n];
+    if(rec){
+      const c = rec.checks.filter(Boolean).length;
+      blocksDone += c;
+      if(c===7) fullDays++;
+    }
+  });
+  document.getElementById("stat-blocks-done").textContent = blocksDone;
+  document.getElementById("stat-days-full").textContent = fullDays;
+  const pct = Math.round((blocksDone/203)*100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+}
+
+async function load(){
+  try{
+    const result = await window.storage.get(STORAGE_KEY, false);
+    if(result && result.value){
+      state = JSON.parse(result.value);
+    }
+  }catch(e){
+    state = {};
+  }
+  render();
+}
+
+async function save(){
+  const indicator = document.getElementById("save-indicator");
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    indicator.textContent = "Saved";
+    setTimeout(()=>{ indicator.textContent = ""; }, 1200);
+  }catch(e){
+    indicator.textContent = "Could not save — check connection";
+  }
+}
+
+load();
+</script>
+</body>
+</html>
